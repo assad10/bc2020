@@ -23,15 +23,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Installing Node
+      - name: Setup Node.js environment
         uses: actions/setup-node@v2-beta
         with:
-            node-version: 17
-
-      # Runs a set of commands using the runners shell
-      - name: installing surge
-        run: npm install --global surge
-      - name: deploying using surge
+          node-version: 12
+     
+      - name: Prepare for Yarn Installation
+        uses: Borales/actions-yarn@v2.1.0
+        with: 
+          cmd: install  
+    
+      - name: Build React App
+        run: yarn build
+      - name: Install Surge
+        run: npm install -g surge
+      - name: Run surge
         run: surge ./ contour-asad.surge.sh   --token ${{ secrets.bootcamp2020}}
       
